@@ -126,7 +126,7 @@ export default function DashboardPage() {
   useEffect(() => {
     if (userRole !== "admin" || !adminSelectedOrgId || !user) return;
     supabase.auth.getSession().then(({ data: { session } }) => {
-      fetchJobs(adminSelectedOrgId, true, session?.session?.access_token);
+      fetchJobs(adminSelectedOrgId, true, session?.access_token);
     });
   }, [adminSelectedOrgId, userRole, user, fetchJobs]);
 
