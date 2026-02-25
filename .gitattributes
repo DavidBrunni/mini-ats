@@ -1,0 +1,4 @@
+# Exclude from GitHub language stats so repo shows as TypeScript
+node_modules linguist-vendored
+.next linguist-vendored
+*.lock linguist-generated

@@ -1,0 +1,16 @@
+# Dependencies – do not commit
+node_modules/
+
+# Build output
+.next/
+out/
+build/
+
+# Env
+.env*
+!.env.example
+
+# Misc
+.DS_Store
+*.log
+.vercel
