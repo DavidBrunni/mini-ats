@@ -249,11 +249,15 @@ function CandidateDetailModal({
   jobTitle,
   onClose,
   onCommentAdded,
+  userRole,
+  onDeleteCandidate,
 }: {
   candidate: Candidate;
   jobTitle: string;
   onClose: () => void;
   onCommentAdded?: () => void;
+  userRole?: string;
+  onDeleteCandidate?: (candidateId: string) => void;
 }) {
   const [comments, setComments] = useState<CommentRow[]>([]);
   const [activities, setActivities] = useState<ActivityRow[]>([]);
@@ -262,6 +266,8 @@ function CandidateDetailModal({
   const [submitting, setSubmitting] = useState(false);
   const [commentError, setCommentError] = useState<string | null>(null);
   const [loadError, setLoadError] = useState<string | null>(null);
+  const [deleting, setDeleting] = useState(false);
+  const [deleteError, setDeleteError] = useState<string | null>(null);
 
   useEffect(() => {
     if (!candidate?.id) return;
@@ -328,6 +334,30 @@ function CandidateDetailModal({
       setComments((prev) => [...prev, inserted as CommentRow]);
       onCommentAdded?.();
     }
+  }
+
+  async function handleDelete() {
+    if (!confirm("Är du säker? Kandidaten och alla kommentarer/aktivitet tas bort permanent.")) return;
+    setDeleteError(null);
+    setDeleting(true);
+    const { data: { session } } = await supabase.auth.getSession();
+    if (!session?.access_token) {
+      setDeleteError("Du måste vara inloggad.");
+      setDeleting(false);
+      return;
+    }
+    const res = await fetch(`/api/admin/candidates/${candidate.id}`, {
+      method: "DELETE",
+      headers: { Authorization: `Bearer ${session.access_token}` },
+    });
+    const data = await res.json().catch(() => ({}));
+    setDeleting(false);
+    if (!res.ok) {
+      setDeleteError(data.error ?? "Kunde inte ta bort kandidaten.");
+      return;
+    }
+    onDeleteCandidate?.(candidate.id);
+    onClose();
   }
 
   return (
@@ -440,6 +470,21 @@ function CandidateDetailModal({
                   </button>
                 </form>
               </section>
+              {userRole === "admin" && onDeleteCandidate && (
+                <section className="mt-4 border-t border-zinc-200 pt-4 dark:border-zinc-700">
+                  {deleteError && (
+                    <p className="mb-2 text-sm text-red-600 dark:text-red-400">{deleteError}</p>
+                  )}
+                  <button
+                    type="button"
+                    onClick={handleDelete}
+                    disabled={deleting}
+                    className="rounded-md bg-red-600 px-3 py-2 text-sm font-medium text-white hover:bg-red-700 disabled:opacity-50 dark:bg-red-700 dark:hover:bg-red-800"
+                  >
+                    {deleting ? "Tar bort…" : "Ta bort kandidat"}
+                  </button>
+                </section>
+              )}
             </>
           )}
         </div>
@@ -821,6 +866,11 @@ export default function JobCandidatesPage() {
               candidate={detailCandidate}
               jobTitle={job?.title ?? ""}
               onClose={() => setDetailCandidate(null)}
+              userRole={userRole}
+              onDeleteCandidate={(id) => {
+                setCandidates((prev) => prev.filter((c) => c.id !== id));
+                setDetailCandidate(null);
+              }}
             />
           ) : null}
           {candidates.length === 0 && (
