@@ -231,7 +231,7 @@ function DragOverlayCard({
 
 type CommentRow = {
   id: string;
-  body: string;
+  comment: string;
   created_at: string;
   user_id?: string;
 };
@@ -274,7 +274,7 @@ function CandidateDetailModal({
       const [commentsRes, activitiesRes] = await Promise.all([
         supabase
           .from("candidate_comments")
-          .select("id, body, created_at, user_id")
+          .select("id, comment, created_at, user_id")
           .eq("candidate_id", candidate.id)
           .order("created_at", { ascending: true }),
         supabase
@@ -313,8 +313,8 @@ function CandidateDetailModal({
     setSubmitting(true);
     const { data: inserted, error } = await supabase
       .from("candidate_comments")
-      .insert({ candidate_id: candidate.id, user_id: user.id, body })
-      .select("id, body, created_at, user_id")
+      .insert({ candidate_id: candidate.id, user_id: user.id, comment: body })
+      .select("id, comment, created_at, user_id")
       .single();
 
     setSubmitting(false);
@@ -406,7 +406,7 @@ function CandidateDetailModal({
                         key={c.id}
                         className="rounded border border-zinc-100 bg-zinc-50 p-2 dark:border-zinc-800 dark:bg-zinc-800/50"
                       >
-                        <p className="text-zinc-900 dark:text-zinc-100">{c.body}</p>
+                        <p className="text-zinc-900 dark:text-zinc-100">{c.comment}</p>
                         <p className="mt-1 text-xs text-zinc-500 dark:text-zinc-400">
                           {new Date(c.created_at).toLocaleString()}
                         </p>
