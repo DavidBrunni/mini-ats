@@ -8,20 +8,6 @@ Developed as a technical case assignment, fulfilling all core requirements and e
 Live URL:
 https://your-project.vercel.app
 
-Demo Credentials
-
-Admin
-
-Email: admin@demo.com
-
-Password: ********
-
-Customer
-
-Email: customer@demo.com
-
-Password: ********
-
 🏗 Tech Stack
 
 Framework: Next.js (App Router)
