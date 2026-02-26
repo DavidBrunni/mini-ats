@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabaseClient";
 import { Navbar } from "./components/Navbar";
+import { ThemeToggle } from "./components/ThemeToggle";
 
 type Profile = { id: string; role?: string };
 
@@ -45,9 +46,14 @@ export default function Home() {
   const role = profile?.role ?? "customer";
 
   return (
-    <div className="flex min-h-screen flex-col bg-zinc-50 dark:bg-zinc-950">
+    <div className="relative flex min-h-screen flex-col bg-zinc-50 dark:bg-zinc-950">
       {loggedIn && (
         <Navbar email={user.email ?? ""} role={role} />
+      )}
+      {!loggedIn && (
+        <div className="absolute top-4 right-4">
+          <ThemeToggle />
+        </div>
       )}
       <div className="flex flex-1 flex-col items-center justify-center px-4 py-12 sm:px-6">
         <main className="w-full max-w-sm text-center">
