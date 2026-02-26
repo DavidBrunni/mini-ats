@@ -1,0 +1,14 @@
+# Dependencies och build – ska inte vara med i Git
+node_modules/
+.next/
+out/
+build/
+*.lock
+
+# Miljö
+.env*
+!.env.example
+
+# Övrigt
+.DS_Store
+.vercel
