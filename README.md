@@ -2,7 +2,7 @@
 
 A **multi-tenant Applicant Tracking System (ATS)** built with **Next.js** and **Supabase**. Developed as a technical case assignment, it fulfills all core requirements and adds production-oriented enhancements for real-world use.  
 
-🚀 **Live Demo:** [https://your-project.vercel.app](https://your-project.vercel.app)  
+🚀 **Live Demo:** [[https://your-project.vercel.app](https://your-project.vercel.app)  ](https://mini-ats-mauve.vercel.app/)
 
 ---
 
