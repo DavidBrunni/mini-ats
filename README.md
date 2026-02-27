@@ -88,4 +88,3 @@ A **multi-tenant Applicant Tracking System (ATS)** built with **Next.js** and **
 
 ---
 
-## 📦 Getting Started
